@@ -10,7 +10,18 @@
 
         </ion-buttons>
 
-        <ion-title>Crear Post</ion-title>
+        <ion-title>{{ titulo | placeHolder:'Crear nuevo post' }}</ion-title>
+
+        <ion-buttons end>
+
+            <button ion-button (click)="crear_post()"
+                    [disabled]=" titulo.length <= 1 || imagenPreview.length <= 1 ">
+                Crear post
+            </button>
+
+        </ion-buttons>
+
+
     </ion-navbar>
 
 </ion-header>
@@ -22,11 +33,11 @@
 
         <ion-item>
             <ion-label floating>Titulo</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="titulo"></ion-input>
         </ion-item>
 
-        <ion-item>
-            <img src="https://image.freepik.com/free-photo/grassy-landscape-with-a-tree-and-raincloud_1048-2904.jpg">
+        <ion-item *ngIf="imagenPreview">
+            <img [src]="imagenPreview">
         </ion-item>
 
     </ion-list>
@@ -34,13 +45,15 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <button ion-button item-left block>
+                <button ion-button item-left block
+                        (click)="seleccionar_foto()">
                   <ion-icon name="photos"></ion-icon>
                   &nbsp;Seleccionar
                 </button>
             </ion-col>
             <ion-col>
-                <button ion-button block item-left>
+                <button ion-button block item-left
+                        (click)="mostrar_camara()">
                 <ion-icon name="camera"></ion-icon>
                  &nbsp;Cámara
               </button>

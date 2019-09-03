@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { SubirPage } from "../subir/subir";
+
+// import { AngularFireDatabase } from 'angularfire2/database';
+// import { Observable } from 'rxjs/Observable';
+import { CargaArchivoProvider } from "../../providers/carga-archivo/carga-archivo";
+
+// Plugins
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @Component({
   selector: 'page-home',
@@ -8,7 +15,16 @@ import { SubirPage } from "../subir/subir";
 })
 export class HomePage {
 
-  constructor( private modalCtrl: ModalController) {  }
+  hayMas:boolean = true;
+  // posts: Observable<any[]>;
+
+  constructor( private modalCtrl: ModalController,
+               private _cap: CargaArchivoProvider,
+               private socialSharing: SocialSharing ) {
+
+    // this.posts = afDB.list('post').valueChanges();
+
+  }
 
 
   mostrar_modal(){
@@ -17,4 +33,29 @@ export class HomePage {
     modal.present();
 
   }
+
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    this._cap.cargar_imagenes().then(
+      ( hayMas:boolean )=> {
+
+        console.log(hayMas);
+        this.hayMas = hayMas;
+
+        infiniteScroll.complete();
+      }
+    );
+
+  }
+
+  compartir( post:any ){
+
+    this.socialSharing.shareViaFacebook( post.titulo, post.img, post.img )
+      .then( ()=>{} ) // se pudo compartir
+      .catch( ()=>{} ) // si sucede un error
+
+  }
+
 }

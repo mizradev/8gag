@@ -11,13 +11,13 @@
 <ion-content>
 
 
-    <ion-card>
-        <img src="https://image.freepik.com/free-photo/grassy-landscape-with-a-tree-and-raincloud_1048-2904.jpg">
+    <ion-card *ngFor="let post of _cap.imagenes">
+        <img [src]="post.img">
 
         <ion-card-content>
 
             <ion-card-title>
-                Post 1
+                {{ post.titulo }}
             </ion-card-title>
 
         </ion-card-content>
@@ -25,10 +25,11 @@
         <ion-row>
             <ion-col text-right>
 
-                <button ion-button clear small color="primary" icon-left>
-          <ion-icon name="share-alt"></ion-icon>
-          Compartir
-        </button>
+                <button ion-button clear small color="primary" icon-left
+                        (click)="compartir(post)">
+                    <ion-icon name="share-alt"></ion-icon>
+                    Compartir
+                  </button>
 
             </ion-col>
         </ion-row>
@@ -44,5 +45,10 @@
 
     </ion-fab>
 
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                        [enabled]="hayMas">
+       <ion-infinite-scroll-content></ion-infinite-scroll-content>
+     </ion-infinite-scroll>
 
 </ion-content>
